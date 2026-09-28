@@ -25,6 +25,10 @@ yarn-error.log*
 # env files
 .env
 .env*.local
+# Vercel CLI writes VERCEL_OIDC_TOKEN into .env.local on `vercel link`. A broad
+# `.env*` would also swallow the committed .env.example, so keep it excluded
+# explicitly instead.
+!.env.example
 
 # vercel
 .vercel
@@ -37,3 +41,4 @@ yarn-error.log*
 
 # local content caches
 /.content-cache
+
