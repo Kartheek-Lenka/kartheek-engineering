@@ -11,7 +11,7 @@ import { processSteps } from '@/data/technology';
 export const metadata: Metadata = buildMetadata({
   title: 'Contact — start a conversation',
   description:
-    'Tell me what you are building, what is in the way, and when it needs to work. A short message is enough to start a useful conversation.',
+    'Tell me what you are building, what is in the way, and when it needs to work. Reach me by email, phone or WhatsApp on +91 75690 67363.',
   path: '/contact',
 });
 
@@ -20,6 +20,17 @@ const BOUNDARIES = [
   'I will tell you if I am not the right fit — usually in the first reply.',
   'I do not take on work I cannot deliver to the standard I would want for my own systems.',
   'No bulk outreach, no automated follow-up sequences, no discovery-call funnel.',
+] as const;
+
+/**
+ * Pricing is quoted per engagement rather than published, so the factors that
+ * move the number are stated instead of the number itself.
+ */
+const PRICING_FACTORS = [
+  { label: 'Scope', detail: 'How much is actually being asked for' },
+  { label: 'Complexity', detail: 'Integrations, data volume, edge cases' },
+  { label: 'Timeline', detail: 'Urgency and the cadence you need' },
+  { label: 'Support', detail: 'Ongoing maintenance and incident cover' },
 ] as const;
 
 export default function ContactPage() {
@@ -51,6 +62,76 @@ export default function ContactPage() {
       <Contact />
       <Global />
 
+      <Section aria-labelledby="pricing-enquiry-title" className="py-20 md:py-24">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+            <div className="lg:col-span-5">
+              <h2 id="pricing-enquiry-title" className="t-h2">
+                Pricing, on request.
+              </h2>
+              <p className="t-body mt-4 max-w-[40ch] text-ink-2">
+                There is no price table on this site. Scope, complexity, timeline and the
+                support you need after launch move the number too much for a static list, so a
+                quote comes out of a conversation instead.
+              </p>
+              <p className="t-body-sm mt-5 max-w-[42ch] text-ink-4">
+                Send a short brief and you will get a written quote with a fixed price for a
+                defined scope, what is explicitly out of scope, and a delivery date.
+              </p>
+            </div>
+
+            <div className="lg:col-span-7">
+              <h3 className="t-label">What moves the number</h3>
+              <dl className="mt-5 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2">
+                {PRICING_FACTORS.map((factor) => (
+                  <div key={factor.label} className="flex flex-col gap-1.5 bg-canvas p-4">
+                    <dt className="text-sm font-medium text-ink">{factor.label}</dt>
+                    <dd className="t-body-sm">{factor.detail}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <h3 className="t-label mt-10">How to reach me</h3>
+              <ul className="mt-5 flex flex-col gap-3">
+                <li className="hairline-b pb-3">
+                  <span className="t-label block">Email</span>
+                  <a
+                    href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(
+                      'Pricing enquiry',
+                    )}`}
+                    className="mt-1 inline-block break-all font-mono text-sm text-ink underline decoration-line-3 underline-offset-4 transition-colors hover:text-accent-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    {siteConfig.email}
+                  </a>
+                </li>
+                <li className="hairline-b pb-3">
+                  <span className="t-label block">Phone</span>
+                  <a
+                    href={`tel:+${siteConfig.phone.e164}`}
+                    className="mt-1 inline-block font-mono text-sm text-ink underline decoration-line-3 underline-offset-4 transition-colors hover:text-accent-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    {siteConfig.phone.display}
+                  </a>
+                </li>
+                <li>
+                  <span className="t-label block">WhatsApp</span>
+                  <a
+                    href={`https://wa.me/${siteConfig.phone.e164}?text=${encodeURIComponent(
+                      "Hi Kartheek — I'd like to discuss a project and pricing.",
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-block font-mono text-sm text-ink underline decoration-line-3 underline-offset-4 transition-colors hover:text-accent-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    Message on WhatsApp
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
       <Section className="py-20 md:py-24">
         <Container>
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
@@ -59,15 +140,29 @@ export default function ContactPage() {
               <p className="t-body mt-4 max-w-[38ch] text-ink-3">
                 No discovery-call funnel. The sequence is short and I run it myself.
               </p>
-              <p className="t-body-sm mt-5 max-w-[40ch] text-ink-4">
-                Prefer email?{' '}
+              <div className="mt-5 flex flex-col gap-2 text-ink-4">
+                <p className="t-body-sm">Prefer to skip the form?</p>
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="text-ink-2 underline decoration-line-3 underline-offset-4 transition-colors hover:text-accent-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  className="t-body-sm break-all font-mono text-ink-2 underline decoration-line-3 underline-offset-4 transition-colors hover:text-accent-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
                   {siteConfig.email}
                 </a>
-              </p>
+                <a
+                  href={`tel:+${siteConfig.phone.e164}`}
+                  className="t-body-sm font-mono text-ink-2 underline decoration-line-3 underline-offset-4 transition-colors hover:text-accent-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {siteConfig.phone.display}
+                </a>
+                <a
+                  href={`https://wa.me/${siteConfig.phone.e164}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="t-body-sm w-fit font-mono text-ink-2 underline decoration-line-3 underline-offset-4 transition-colors hover:text-accent-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  WhatsApp the same number
+                </a>
+              </div>
             </div>
             <div className="lg:col-span-8">
               <ol className="flex flex-col">

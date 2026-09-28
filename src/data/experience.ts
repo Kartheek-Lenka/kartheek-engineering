@@ -150,8 +150,9 @@ export const globalFacts = [
     detail: 'IST (UTC+5:30) with a working window that overlaps the UK, EU and US mornings.',
   },
   {
-    label: 'Multiple currencies',
-    detail: 'Quoted in USD, with EUR, GBP and INR shown for budgeting.',
+    label: 'Quoted in writing',
+    detail:
+      'A written quote with a fixed price for a defined scope, in USD or your local currency.',
   },
   {
     label: 'English-first documentation',

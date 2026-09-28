@@ -16,7 +16,7 @@ export function Global() {
     <Section id="global" aria-labelledby="global-title" className="bg-canvas-2">
       <Container className="py-20 md:py-28">
         <SectionHeader
-          index="12"
+          index="11"
           id="global-title"
           eyebrow="Working together"
           title="Remote, across timezones, with written decisions."

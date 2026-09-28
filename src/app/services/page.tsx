@@ -156,9 +156,8 @@ export default function ServicesPage() {
 
       <CtaBand
         eyebrow="Pricing"
-        title="Starting prices are published, not hidden behind a form."
-        body="Pick a tier to see what a starting budget looks like, then tell me what you actually need."
-        secondary={{ href: '/pricing', label: 'See pricing' }}
+        title="Pricing is scoped, not listed."
+        body="There is no price table on this site. Send a short brief by email or WhatsApp and you will get a written quote with a fixed price for a defined scope."
       />
     </>
   );

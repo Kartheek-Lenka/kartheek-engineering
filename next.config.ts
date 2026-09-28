@@ -39,6 +39,9 @@ const nextConfig: NextConfig = {
       { source: '/projects', destination: '/work', permanent: true },
       { source: '/blog', destination: '/insights', permanent: true },
       { source: '/contact-us', destination: '/contact', permanent: true },
+      // Pricing is quoted per engagement rather than published, so the old
+      // route points at the enquiry form instead of returning a 404.
+      { source: '/pricing', destination: '/contact', permanent: true },
     ];
   },
 };

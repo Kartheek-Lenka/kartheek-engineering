@@ -35,6 +35,11 @@ const fieldClass =
 
 const labelClass = 't-label mb-2 block';
 
+/** Pre-filled WhatsApp click-to-chat. `wa.me` requires the bare number. */
+const whatsappUrl = `https://wa.me/${siteConfig.phone.e164}?text=${encodeURIComponent(
+  "Hi Kartheek — I'd like to discuss a project.",
+)}`;
+
 type Field = keyof InquiryDraft;
 
 function Select({
@@ -130,7 +135,7 @@ export function Contact() {
           <div className="lg:col-span-5">
             <SectionHeader
               id="contact-title"
-              index="13"
+              index="12"
               eyebrow="Contact"
               align="start"
               title="Start a conversation."
@@ -158,6 +163,72 @@ export function Contact() {
                   ↗
                 </span>
               </a>
+
+              <a
+                href={`tel:+${siteConfig.phone.e164}`}
+                className="group flex items-center justify-between gap-4 rounded-lg border border-line-2 bg-surface/40 px-4 py-3.5 transition-colors duration-200 hover:border-line-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                data-analytics="contact_phone"
+                data-analytics-location="contact"
+              >
+                <span className="min-w-0">
+                  <span className="t-label block">Phone</span>
+                  <span className="mt-1 block font-mono text-sm text-ink">
+                    {siteConfig.phone.display}
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="text-ink-4 transition-transform group-hover:translate-x-0.5"
+                >
+                  ↗
+                </span>
+              </a>
+
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between gap-4 rounded-lg border border-line-2 bg-surface/40 px-4 py-3.5 transition-colors duration-200 hover:border-line-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                data-analytics="contact_whatsapp"
+                data-analytics-location="contact"
+              >
+                <span className="min-w-0">
+                  <span className="t-label block">WhatsApp</span>
+                  <span className="mt-1 block font-mono text-sm text-ink">
+                    {siteConfig.phone.display}
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="text-ink-4 transition-transform group-hover:translate-x-0.5"
+                >
+                  ↗
+                </span>
+              </a>
+
+              {/*
+                Pricing is not published on this site. Scope, timeline and
+                integrations move the number too much for a static table, so the
+                quote comes out of a conversation rather than off a page.
+              */}
+              <div className="rounded-lg border border-line-2 p-4">
+                <p className="t-label">Pricing</p>
+                <p className="t-body-sm mt-2.5 text-ink-2">
+                  Not published here. Every engagement is scoped and quoted
+                  individually, so the number comes out of a conversation. Send a
+                  short brief by email, or message the same number on WhatsApp,
+                  and you will get a written quote with a fixed price for a
+                  defined scope.
+                </p>
+                <a
+                  href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(
+                    'Pricing enquiry',
+                  )}`}
+                  className="t-body-sm mt-3 inline-block font-mono text-ink underline decoration-line-3 underline-offset-4 transition-colors hover:decoration-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  Request a quote
+                </a>
+              </div>
 
               {siteConfig.booking.calendly ? (
                 <ButtonLink

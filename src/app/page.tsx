@@ -8,7 +8,6 @@ import { Process } from '@/components/sections/process';
 import { AiAssisted } from '@/components/sections/ai-assisted';
 import { Technology } from '@/components/sections/technology';
 import { About, Experience } from '@/components/sections/about';
-import { Pricing } from '@/components/sections/pricing';
 import { Global } from '@/components/sections/global';
 import { Contact } from '@/components/sections/contact';
 import { Insights } from '@/components/sections/insights';
@@ -17,8 +16,8 @@ import { Insights } from '@/components/sections/insights';
  * Homepage.
  *
  * The order is the argument: what is broken, how it is fixed, proof, then the
- * mechanism (delivery, architecture, process), then the person, the numbers, and
- * how to make contact.
+ * mechanism (delivery, architecture, process), then the person, and how to make
+ * contact.
  */
 export default function HomePage() {
   return (
@@ -34,7 +33,6 @@ export default function HomePage() {
       <Technology />
       <About />
       <Experience />
-      <Pricing />
       <Global />
       <Insights />
       <Contact />

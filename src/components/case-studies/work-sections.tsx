@@ -55,8 +55,7 @@ export function WorkIndex() {
       <CtaBand
         eyebrow="Your project"
         title="The next case study could be yours."
-        body="If you are building something that has to survive production, the scoping conversation is the fastest way to find out whether I am the right person for it."
-        secondary={{ href: '/pricing', label: 'See starting prices' }}
+        body="If you are building something that has to survive production, the scoping conversation — including what it would cost — is the fastest way to find out whether I am the right person for it."
       />
     </>
   );

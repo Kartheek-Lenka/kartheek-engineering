@@ -1,7 +1,6 @@
 import { siteConfig } from '@/data/site';
 import { PERSON_ID, SERVICE_ID, WEBSITE_ID, id } from '@/lib/metadata';
 import { services } from '@/data/services';
-import { formatPrice } from '@/lib/pricing';
 
 /**
  * Structured data. Person, ProfessionalService, WebSite and Article.
@@ -70,7 +69,7 @@ export function professionalServiceSchema() {
       'Independent AI product, full-stack and cloud engineering practice. Takes software from first architecture decision through build, deployment, observability and scale.',
     url: siteConfig.url,
     email: `mailto:${siteConfig.email}`,
-    priceRange: '$$',
+    telephone: `+${siteConfig.phone.e164}`,
     areaServed: [
       { '@type': 'Country', name: 'United States' },
       { '@type': 'Country', name: 'United Kingdom' },
@@ -87,31 +86,16 @@ export function professionalServiceSchema() {
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'Engineering services',
-      itemListElement: [
-        ...services.map((service) => ({
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: service.title,
-            description: service.summary,
-            serviceType: service.title,
-            url: `${siteConfig.url}/services#${service.id}`,
-          },
-        })),
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Project starting prices',
-            description:
-              'Starting-from prices for foundation, product, AI product, production engineering and ongoing engineering engagements.',
-            url: `${siteConfig.url}/pricing`,
-          },
-          priceCurrency: 'USD',
-          price: '1500',
-          eligibleRegion: { '@type': 'Place', name: 'Worldwide' },
+      itemListElement: services.map((service) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: service.title,
+          description: service.summary,
+          serviceType: service.title,
+          url: `${siteConfig.url}/services#${service.id}`,
         },
-      ],
+      })),
     },
   };
 }
@@ -199,9 +183,4 @@ export function articleSchema(input: {
 
 export function breadcrumbListFor(paths: { name: string; path: string }[]) {
   return breadcrumbSchema(paths);
-}
-
-/** Formats a starting price for structured data. */
-export function startingPrice(usd: number): string {
-  return formatPrice(usd, 'USD').replace(/[^0-9]/g, '');
 }

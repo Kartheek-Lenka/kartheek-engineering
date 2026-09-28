@@ -38,7 +38,7 @@ export async function Insights() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-[52ch]">
             <SectionHeader
-              index="14"
+              index="13"
               id="insights-title"
               eyebrow="Insights"
               title="Notes from the work."

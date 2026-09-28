@@ -14,8 +14,6 @@
 export type AnalyticsEvent =
   | { name: 'cta_click'; cta: string; location: string }
   | { name: 'case_study_open'; project: string }
-  | { name: 'pricing_view'; tier: string; currency: string }
-  | { name: 'currency_switch'; currency: string; location: string }
   | { name: 'inquiry_start'; location: string }
   | { name: 'inquiry_submitted'; projectType: string; budget: string }
   | { name: 'inquiry_error'; field?: string }

@@ -13,6 +13,14 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kartheek.engineering',
   locale: 'en',
   email: 'kartheeklenka1234@gmail.com',
+  /**
+   * Direct lines. Phone and WhatsApp are the same number; `e164` is the
+   * dial/wa.me form (no spaces, no `+`) that both `tel:` and WhatsApp require.
+   */
+  phone: {
+    display: '+91 75690 67363',
+    e164: '917569067363',
+  },
   location: {
     city: 'Andhra Pradesh',
     region: 'India',
@@ -65,7 +73,6 @@ export const footerNav = {
   company: [
     { href: '/about', label: 'About' },
     { href: '/process', label: 'Process' },
-    { href: '/pricing', label: 'Pricing' },
     { href: '/insights', label: 'Insights' },
     { href: '/contact', label: 'Contact' },
   ],

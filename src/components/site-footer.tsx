@@ -7,6 +7,12 @@ const socials = [
   { label: 'LinkedIn', href: siteConfig.social.linkedin, handle: '/in/kartheek-devops' },
   { label: 'GitHub', href: siteConfig.social.github, handle: 'Kartheek-Lenka' },
   { label: 'Email', href: `mailto:${siteConfig.email}`, handle: siteConfig.email },
+  {
+    label: 'WhatsApp',
+    href: `https://wa.me/${siteConfig.phone.e164}`,
+    handle: siteConfig.phone.display,
+  },
+  { label: 'Phone', href: `tel:+${siteConfig.phone.e164}`, handle: siteConfig.phone.display },
 ] as const;
 
 const lifecycle = ['IDEA', 'PRODUCT', 'ENGINEERING', 'CLOUD', 'PRODUCTION', 'SCALE'] as const;
@@ -88,7 +94,7 @@ export function SiteFooter() {
               <li key={social.label}>
                 <a
                   href={social.href}
-                  target={social.label === 'Email' ? undefined : '_blank'}
+                  target={social.href.startsWith('http') ? '_blank' : undefined}
                   rel="noopener noreferrer"
                   className="group inline-flex items-baseline gap-2 rounded-sm text-sm text-ink-2 transition-colors duration-200 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
                 >
