@@ -52,11 +52,13 @@ export function SiteHeader() {
             className="relative flex h-7 w-7 items-center justify-center rounded-[5px] border border-line-2 bg-surface-2 transition-colors duration-200 group-hover:border-line-3"
           >
             <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="none">
+              {/* K monogram: stem plus the two diagonals meeting it mid-height. */}
               <path
-                d="M4 16V4l12 12V4"
+                d="M4 16V4M15.4 4.4L4 10.4l11.4 5.2"
                 stroke="currentColor"
                 strokeWidth="1.6"
                 strokeLinecap="square"
+                strokeLinejoin="miter"
                 className="text-ink"
               />
             </svg>

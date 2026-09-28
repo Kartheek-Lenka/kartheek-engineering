@@ -48,6 +48,12 @@ export const PLANNED_LOCALES = [
 
 type PageMetaInput = {
   title: string;
+  /**
+   * Render `title` as-is instead of applying the layout's `%s · Name` template.
+   * The homepage already spells the name into its default title, so the
+   * template would produce "Kartheek Lenka — … · Kartheek Lenka".
+   */
+  titleAbsolute?: boolean;
   description: string;
   path: string;
   keywords?: string[];
@@ -59,6 +65,7 @@ type PageMetaInput = {
 
 export function buildMetadata({
   title,
+  titleAbsolute,
   description,
   path,
   keywords,
@@ -70,7 +77,7 @@ export function buildMetadata({
   const canonical = `${BASE}${path}`;
 
   return {
-    title,
+    title: titleAbsolute ? { absolute: title } : title,
     description,
     keywords: keywords ?? PRIMARY_KEYWORDS,
     alternates: {
