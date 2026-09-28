@@ -1,0 +1,73 @@
+---
+title: 'Ship the boring architecture first'
+description: 'A monolith with a clear module boundary beats a distributed system with unclear ownership. Complexity should be bought, not assumed.'
+date: '2026-05-21'
+tags: ['architecture', 'backend', 'product']
+featured: false
+---
+
+There is a particular kind of portfolio project that lists a dozen services, a
+message queue and a Kubernetes cluster for an application with four hundred
+users. It looks impressive. It is also a system where a single developer cannot
+change the login flow without a deployment plan.
+
+I start almost every project as a modular monolith, and I have had no occasion
+to regret it.
+
+## Why the boring option wins
+
+The cost of a microservice boundary is not the container. It is every
+cross-service call that now needs:
+
+- a network timeout policy,
+- a retry strategy with backoff and jitter,
+- a way to make two writes atomic,
+- tracing that stitches the calls together,
+- and an on-call story when the call fails at 3am.
+
+None of that is hard individually. All of it is paid for, continuously, by the
+whole team. A function call inside one deployable has none of those costs and
+does the same job for the first 50,000 users.
+
+## Boundaries are still the point
+
+A monolith without structure is worse than microservices, because a monolith is
+easy to grow tangled. The useful part of the microservice idea is not the
+network — it is the insistence on a named boundary with one owner and a clear
+interface.
+
+You get that inside a single codebase with modules that do not reach into each
+other's internals, and you can hold the line with a lint rule instead of a
+network policy. Same discipline, far cheaper enforcement.
+
+## Know the signals that justify splitting
+
+I have split a monolith. The signals, in the order they tend to appear:
+
+- **Independent release cadence.** One team is blocked waiting for another
+  team's release train. This is the strongest signal, and it is a team problem
+  more than a technical one.
+- **A component that needs a different runtime.** An inference service in
+  Python next to a Node application is a genuine reason for a boundary — you are
+  not splitting for architecture theatre, you are splitting because the workloads
+  have genuinely different resource shapes.
+- **A blast radius that is too large.** One deployable where a memory leak takes
+  down an unrelated feature is a real isolation problem.
+- **Scale that is wildly uneven.** A report job that reads the whole database and
+  a request that reads one row should not be fighting for the same memory limit.
+
+If none of those apply, the network is overhead you chose for no benefit.
+
+## The migration is not a rewrite
+
+Splitting a working monolith is incremental. Extract a module, give it an
+interface, route traffic to it, and leave the old path in place until the new one
+has been proven in production. Every step is separately reversible, which is the
+property that makes this safe to do on a live system.
+
+## What this looks like in practice
+
+A Next.js application, a Postgres database, and a clear rule that domain logic
+lives behind a service interface which knows nothing about HTTP. When the tenth
+engineer joins, or the traffic justifies it, that interface is the seam the
+service splits along — and it already exists.

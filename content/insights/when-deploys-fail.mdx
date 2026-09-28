@@ -1,0 +1,72 @@
+---
+title: 'Your deploy failed. Now what?'
+description: 'A production incident is a systems problem, not a people problem. Here is the order I follow when a release goes wrong at 2am.'
+date: '2026-08-18'
+tags: ['devops', 'reliability', 'ci-cd']
+featured: true
+---
+
+The interesting engineering question is never "did the deploy succeed". It is
+"when it did not, how long until the system was serving users again, and how much
+of that time was spent figuring out what to do?"
+
+Most of that second number is avoidable. It is avoidable because the failure
+mode is almost always the same: the run stops, the engineer opens four different
+tools, and the rollback command has to be reconstructed from memory.
+
+## Stop the bleeding before you understand it
+
+The instinct to diagnose first is wrong under load. Restoring service is
+reversible; the customer impact while you read logs is not. So the first action
+is always the same shape:
+
+1. Confirm user impact is real, not theoretical.
+2. Revert to the last known-good version.
+3. Watch the error rate fall.
+4. Only then start investigating.
+
+A rollback is a known-good state. A clever hotfix written at 2am is a hypothesis,
+and shipping a hypothesis to production under pressure is how one incident
+becomes two.
+
+## Have the rollback ready before you need it
+
+This is the part that is cheap to do in advance and expensive to retrofit. A
+rollback path is ready when:
+
+- The previous image is still available and pullable.
+- The migration for this release is backwards compatible, or the deploy knows
+  not to roll the schema back automatically.
+- Someone has run the rollback at least once, on staging, deliberately.
+
+That last point is the one people skip. An untested rollback is a plan, not a
+capability.
+
+## Schema migrations are where rollbacks get interesting
+
+Application code and database schema are versioned separately, which means a
+rollback has two possible meanings: revert the code only, or revert the code
+and the schema. Reverting the schema under live traffic is usually the wrong
+answer.
+
+The pattern that avoids the problem is expand and contract. Add the new column,
+write to both, read from the new one, backfill, then remove the old column in a
+later release. At no point does any running version of the code depend on a
+schema state that no longer exists.
+
+## Write the postmortem when you still remember
+
+A postmortem written a week later is a reconstruction. A postmortem written the
+next day, while the timeline is still fresh, is a record. Keep it blameless and
+keep it specific: what happened, why the system allowed it, what detection
+missed, and which single change would have shortened the outage.
+
+If the answer is "we would have known sooner if this dashboard existed", then
+the postmortem has produced its output. That is the whole point.
+
+## What this has to do with your build
+
+A product demo is a single successful deploy. Production is a system that
+survives the unsuccessful ones. If nobody on the team has run the rollback, the
+pipeline is not finished — it just happens to be untested in the direction that
+matters.

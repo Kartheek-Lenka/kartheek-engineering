@@ -1,0 +1,66 @@
+---
+title: 'Four signals, not forty dashboards'
+description: 'What to measure when a system is too slow and too quiet to explain itself. Rate, errors, duration, saturation — and the ordering that makes them useful.'
+date: '2026-04-09'
+tags: ['observability', 'reliability', 'devops']
+featured: false
+---
+
+A new service arrives with whatever dashboard the platform team installed. It
+has forty panels, most of them flat, all of them unowned. Three months later
+nobody can answer the only question that mattered during the incident: was this
+get slower, or was it always slow?
+
+Four signals are enough, if you know the order to read them in.
+
+## The reading order
+
+**Rate.** How many requests per second? If this changed, the rest of the
+investigation is about a traffic change, not a code change. A latency increase
+during a 3x traffic spike is a capacity story, not a regression.
+
+**Errors.** What fraction of requests failed, and what kind? Count by status and
+by error class separately. "The dashboard went up" is a rate question; "5xx
+tripled" is a correctness question. They have different causes.
+
+**Duration.** The distribution, not the mean. A mean of 200ms can hide a
+percentile at four seconds, and it is the percentile your slowest users
+experience that generates support messages.
+
+**Saturation.** How full is the constrained resource — connections, memory, a
+thread pool, a queue depth? This is usually the cause, and it is the last
+signal to look at because it is downstream of the other three.
+
+Read in that order and you eliminate most hypotheses before you open a log
+searcher.
+
+## Averages hide the problem
+
+If you keep one number, keep p95. It is a reasonable compromise between the
+sensitivity of a high percentile and the noise of a true maximum.
+
+What you should not do is average. A service where 95% of requests take 30ms
+and 5% take 8 seconds has a mean of 415ms, which describes no request anyone
+actually made. The interesting behaviour is always in the tail, and the tail is
+where your least patient users are.
+
+## Alerts should mean "act now"
+
+Every alert that does not require action is training your team to ignore alerts.
+The test is simple: if this fires at 3am, what does the person on call actually
+do?
+
+Page on user impact: error rate, availability, and latency beyond a threshold
+that a customer would notice. Everything else — a slow batch job, a queue
+backlog that has hours of headroom, a certificate expiring in thirty days —
+belongs in a ticket or a dashboard, not a rota.
+
+## Logs explain, metrics detect
+
+Metrics are how you know something is wrong. Logs are how you work out what
+happened. Keeping them separate means each stays cheap enough to keep.
+
+Structured logs with a request ID are the minimum that makes an investigation
+possible. Without correlation, a distributed trace is a set of unrelated
+timestamps and you are reading them in the order they happened to be rendered,
+which is not the order they happened in.

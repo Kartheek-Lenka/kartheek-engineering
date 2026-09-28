@@ -1,0 +1,40 @@
+{
+  "name": "kartheek-lenka-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio and lead-generation site for Kartheek Lenka — AI product, full-stack and cloud engineering.",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
+    "analyze": "ANALYZE=true next build",
+    "check": "npm run lint && npm run typecheck && npm run build"
+  },
+  "dependencies": {
+    "next": "16.3.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "motion": "13.4.4",
+    "lucide-react": "1.48.0",
+    "zod": "4.1.13",
+    "gray-matter": "4.0.3",
+    "next-mdx-remote": "5.0.0",
+    "remark-gfm": "4.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "eslint": "9.39.1",
+    "eslint-config-next": "16.3.6"
+  }
+}

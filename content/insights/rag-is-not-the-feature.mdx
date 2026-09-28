@@ -1,0 +1,69 @@
+---
+title: 'RAG is not the feature'
+description: 'Retrieval-augmented generation is an implementation detail that gets promoted to a product. The product is the answer, and the answer has to be right.'
+date: '2026-07-02'
+tags: ['ai', 'llm', 'architecture']
+featured: true
+---
+
+Most AI product work I see starts with a technology decision and works backwards
+to a problem. "We should use RAG" is a reasonable conclusion reached by a
+reasonable route, but it is a conclusion about implementation, not about what
+the user needs.
+
+The user needs an answer. Whether that answer came from a prompt, a retrieval
+step, a fine-tuned model, or a person is their concern only insofar as it fails.
+
+## The retrieval step is where it usually breaks
+
+When an AI feature is underperforming, the reflex is to blame the model. In my
+experience the model is often fine. The failure is usually that the right
+context never made it into the prompt.
+
+Common causes, in the order I check them:
+
+- The document was chunked in a way that split the answer from its conditions.
+- The query and the document use different vocabulary, so embeddings miss.
+- The top-k cutoff is too low, or too high, and nobody measured which.
+- The most relevant document was retrieved, but ranked below ten others and
+  truncated away.
+- A permission filter ran after retrieval and removed the one correct document.
+
+None of these are model problems. All of them are invisible unless you log what
+was retrieved.
+
+## Evaluate the retrieval separately from the generation
+
+This is the highest-leverage habit in shipping AI features. Two different
+questions, measured differently:
+
+**Retrieval:** for a set of real questions, did the correct source document
+appear in the top k? Track recall@k. This is a search problem and it is
+measurable with a labelled set of maybe fifty questions.
+
+**Generation:** given the correct document, did the model answer correctly and
+cite it? This is a prompt and model problem.
+
+Blending the two means a regression in retrieval looks like a model quality
+problem, and you spend a week tuning prompts to fix a chunking bug.
+
+## Cost and latency are design constraints, not surprises
+
+A RAG system that costs $0.40 per session and takes nine seconds to answer is
+not a working feature, however good the answers are. Budgets belong in the
+design document, before the architecture is fixed:
+
+- Embedding cost at the volume you actually expect.
+- Generation tokens per request, with the prompt cached where possible.
+- How many documents make it into context, and whether the tail is worth it.
+- A smaller model for retrieval and routing, a larger one for the final answer.
+
+## The part nobody demos: degradation
+
+What does the product do when the model is unavailable, or returns something
+unparseable, or is confidently wrong?
+
+A real AI feature has a fallback path — a deterministic answer, a human
+handoff, or an honest "I could not find a confident answer to that". The
+fallback is part of the feature, and it should be tested as deliberately as the
+happy path.
